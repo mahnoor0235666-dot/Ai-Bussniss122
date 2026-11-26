@@ -6,7 +6,7 @@ import { formatDate, usePrefs } from '../lib/i18n';
 import { Alert, ConfirmDialog, Field, Spinner } from '../components/ui';
 
 export default function Profile() {
-  const { t } = usePrefs();
+  const { t, language } = usePrefs();
   const { user, updateProfile, setUser } = useAuth();
   const navigate = useNavigate();
 
@@ -113,7 +113,7 @@ export default function Profile() {
       <header className="stack-sm">
         <h1 style={{ fontSize: '1.4rem' }}>{t('profile')}</h1>
         <p className="muted">
-          {user.email} · member since {formatDate(user.createdAt)}
+          {user.email} · member since {formatDate(user.createdAt, language)}
         </p>
       </header>
 
