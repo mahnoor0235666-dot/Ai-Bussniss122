@@ -148,7 +148,7 @@ export default function Tasks() {
     if (!deleting) return;
     setBusy(true);
     try {
-      await api.delete(`/api/tasks/${deleting.id}`);
+      await api.del(`/api/tasks/${deleting.id}`);
       setDeleting(null);
       await load();
       notify(t('delete'));

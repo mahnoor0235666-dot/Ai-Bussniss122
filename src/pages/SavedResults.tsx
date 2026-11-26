@@ -97,7 +97,7 @@ export default function SavedResults() {
     if (!deleting) return;
     setBusy(true);
     try {
-      await api.delete(`/api/analyses/${deleting.id}`);
+      await api.del(`/api/analyses/${deleting.id}`);
       setDeleting(null);
       open(null);
       await load();
@@ -199,7 +199,6 @@ export default function SavedResults() {
                 wordBreak: 'break-word',
                 margin: 0,
                 fontFamily: 'inherit',
-                direction: 'auto',
               }}
             >
               {analysisToText(selected.content)}

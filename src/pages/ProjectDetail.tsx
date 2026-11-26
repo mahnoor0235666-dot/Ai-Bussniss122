@@ -80,7 +80,7 @@ export default function ProjectDetail() {
     if (!id) return;
     setBusy(true);
     try {
-      await api.delete(`/api/projects/${id}`);
+      await api.del(`/api/projects/${id}`);
       notify(t('delete'));
       navigate('/projects');
     } catch (caught) {

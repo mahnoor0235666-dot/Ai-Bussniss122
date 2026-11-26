@@ -125,7 +125,7 @@ export default function Profile() {
           </span>
         </div>
         <form className="card-body stack" onSubmit={saveProfile}>
-          {profileMsg ? <Alert kind={profileMsg.kind === 'ok' ? 'ok' : 'err'}>{profileMsg.text}</Alert> : null}
+          {profileMsg ? <Alert kind={profileMsg.kind === 'ok' ? 'success' : 'error'}>{profileMsg.text}</Alert> : null}
           <Field label="Display name" htmlFor="profile-name">
             <input
               className="input"
@@ -156,7 +156,7 @@ export default function Profile() {
         </form>
         {!user.emailVerified ? (
           <div className="card-body stack-sm" style={{ borderTop: '1px solid var(--border)' }}>
-            {verifyMsg ? <Alert kind={verifyMsg.kind === 'ok' ? 'ok' : 'warn'}>{verifyMsg.text}</Alert> : null}
+            {verifyMsg ? <Alert kind={verifyMsg.kind === 'ok' ? 'success' : 'warn'}>{verifyMsg.text}</Alert> : null}
             <button type="button" className="btn" onClick={() => void resendVerification()} disabled={sendingVerify}>
               {sendingVerify ? <Spinner /> : null} Resend confirmation email
             </button>
@@ -169,7 +169,7 @@ export default function Profile() {
           <h2 style={{ fontSize: '1rem' }}>Change password</h2>
         </div>
         <form className="card-body stack" onSubmit={changePassword}>
-          {pwMsg ? <Alert kind={pwMsg.kind === 'ok' ? 'ok' : 'err'}>{pwMsg.text}</Alert> : null}
+          {pwMsg ? <Alert kind={pwMsg.kind === 'ok' ? 'success' : 'error'}>{pwMsg.text}</Alert> : null}
           <Field label="Current password" htmlFor="pw-current">
             <input
               className="input"
@@ -223,33 +223,8 @@ export default function Profile() {
           <p className="small muted">
             Deleting your account permanently removes your projects, tasks and saved analyses. This cannot be undone.
           </p>
-          <div className="row">
-            <button type="button" className="btn btn-danger" onClick={() => setDeleteOpen(true)}>
-              Delete my account
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <ConfirmDialog
-        open={deleteOpen}
-        title="Delete your account?"
-        confirmLabel="Delete everything"
-        danger
-        busy={deleting}
-        onCancel={() => {
-          setDeleteOpen(false);
-          setDeletePassword('');
-          setDeleteError(null);
-        }}
-        onConfirm={() => void deleteAccount()}
-      >
-        <div className="stack-sm">
-          <p className="small">
-            All projects, tasks and saved analyses are removed immediately. Enter your password to confirm.
-          </p>
-          {deleteError ? <Alert kind="err">{deleteError}</Alert> : null}
-          <Field label="Password" htmlFor="delete-password">
+          {deleteError ? <Alert kind="error">{deleteError}</Alert> : null}
+          <Field label="Password" htmlFor="delete-password" hint="Required to confirm account deletion.">
             <input
               className="input"
               id="delete-password"
@@ -259,8 +234,32 @@ export default function Profile() {
               onChange={(e) => setDeletePassword(e.target.value)}
             />
           </Field>
+          <div className="row">
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={() => setDeleteOpen(true)}
+              disabled={deletePassword.length === 0}
+            >
+              Delete my account
+            </button>
+          </div>
         </div>
-      </ConfirmDialog>
+      </section>
+
+      <ConfirmDialog
+        open={deleteOpen}
+        title="Delete your account?"
+        body="All projects, tasks and saved analyses are removed immediately. This cannot be undone."
+        confirmLabel="Delete everything"
+        busy={deleting}
+        onCancel={() => {
+          setDeleteOpen(false);
+          setDeletePassword('');
+          setDeleteError(null);
+        }}
+        onConfirm={() => void deleteAccount()}
+      />
     </div>
   );
 }

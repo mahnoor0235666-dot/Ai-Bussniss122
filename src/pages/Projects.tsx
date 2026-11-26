@@ -104,7 +104,7 @@ export default function Projects() {
     if (!deleting) return;
     setBusy(true);
     try {
-      await api.delete(`/api/projects/${deleting.id}`);
+      await api.del(`/api/projects/${deleting.id}`);
       setDeleting(null);
       await load();
       notify(t('delete'));
