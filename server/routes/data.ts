@@ -1,7 +1,16 @@
 import { Router } from 'express';
 import type { AnalysisRow, DB, ProjectRow, TaskRow, UserRow } from '../db';
 import { ApiError, parseBody } from '../errors';
-import { hashPassword, newId, publicUser, requireAuth, verifyPassword, type AuthedRequest } from '../auth';
+import {
+  SESSION_COOKIE,
+  hashPassword,
+  newId,
+  publicUser,
+  requireAuth,
+  sha256,
+  verifyPassword,
+  type AuthedRequest,
+} from '../auth';
 import {
   analysisSaveSchema,
   changePasswordSchema,
