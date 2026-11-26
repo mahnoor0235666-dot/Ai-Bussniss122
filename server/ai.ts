@@ -1,4 +1,5 @@
 import type { DB } from './db';
+import { ApiError } from './errors';
 
 export type AiKind = 'problem' | 'plan' | 'marketing' | 'sales';
 
@@ -10,13 +11,13 @@ export type AiErrorCode =
   | 'ai_invalid_output'
   | 'ai_quota_exceeded';
 
-export class AiError extends Error {
+export class AiError extends ApiError {
   constructor(
     public code: AiErrorCode,
     message: string,
     public status = 503,
   ) {
-    super(message);
+    super(status, code, message);
     this.name = 'AiError';
   }
 }

@@ -108,7 +108,7 @@ describe('authentication', () => {
 
   it('registers a new user and returns no password material', async () => {
     const response = await a.post('/api/auth/signup', userA);
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
     expect(response.body?.user?.email).toBe(userA.email);
     expect(response.body?.user?.displayName).toBe(userA.displayName);
     expect(JSON.stringify(response.body)).not.toContain(userA.password);
@@ -231,7 +231,7 @@ describe('projects, tasks and saved analyses', () => {
 
   it('prevents another user from reading or changing the records', async () => {
     const signup = await a.post('/api/auth/signup', userB);
-    expect(signup.status).toBe(200);
+    expect(signup.status).toBe(201);
 
     const list = await a.get('/api/projects');
     expect(list.status).toBe(200);

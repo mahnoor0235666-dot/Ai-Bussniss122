@@ -367,8 +367,9 @@ export function accountRoutes(db: DB): Router {
       throw new ApiError(400, 'invalid_credentials', 'Your current password is not correct.');
     }
     db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hashPassword(body.newPassword), user.id);
-    // Keep the current session, drop the others.
-    db.prepare('DELETE FROM sessions WHERE user_id = ? AND token_hash != ?').run(user.id, '');
+    // Drop other sessions but keep the one making this request signed in.
+    const currentToken = (req.cookies?.[SESSION_COOKIE] as string | undefined) ?? '';
+    db.prepare('DELETE FROM sessions WHERE user_id = ? AND token_hash != ?').run(user.id, sha256(currentToken));
     res.json({ ok: true });
   });
 
