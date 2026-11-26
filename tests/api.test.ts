@@ -68,8 +68,8 @@ const stamp = Date.now();
 const userA = { email: `owner-a-${stamp}@example.com`, password: 'OwnerPass123!', displayName: 'Owner A' };
 const userB = { email: `owner-b-${stamp}@example.com`, password: 'OtherPass123!', displayName: 'Owner B' };
 
-const a = new Client('');
-const b = new Client('');
+let a: Client;
+let b: Client;
 
 beforeAll(async () => {
   db = openDatabase(':memory:');
@@ -78,9 +78,8 @@ beforeAll(async () => {
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
   const { port } = server.address() as AddressInfo;
   base = `http://127.0.0.1:${port}`;
-  // Rebind clients to the real port.
-  (a as unknown as { base: string }).base = base;
-  (b as unknown as { base: string }).base = base;
+  a = new Client(base);
+  b = new Client(base);
 });
 
 afterAll(async () => {
